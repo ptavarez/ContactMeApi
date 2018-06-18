@@ -37,6 +37,13 @@ namespace ContactMeApi.Controllers
 
         private string BuildToken(UserModel user)
         {
+            
+            var claims = new[] {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Name),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -69,7 +76,7 @@ namespace ContactMeApi.Controllers
         {
             public string Name { get; set; }
             public string Email { get; set; }
-            public DateTime Birthdate { get; set; }
+            public bool Admin { get; set; }
         }
     }
 }
