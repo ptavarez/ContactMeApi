@@ -51,5 +51,37 @@ namespace ContactMeApi.Controllers
 
             return CreatedAtRoute("GetContact", new { id = contact.Id }, contact);
         }
+        [HttpPut("{id}")]
+        public IActionResult Update(long id, Contact contact)
+        {
+            var con = _context.Contacts.Find(id);
+            if (con == null)
+            {
+                return NotFound();
+            }
+
+            con.First_name = contact.First_name;
+            con.Last_name = contact.Last_name;
+            con.Job_title = contact.Job_title;
+            con.Phone_number = contact.Phone_number;
+            con.Email = contact.Email;
+
+            _context.Contacts.Update(contact);
+            _context.SaveChanges();
+            return NoContent();
+        }
+        [HttpDelete("{id}")]
+        public IActionResult Delete(long id)
+        {
+            var con = _context.Contacts.Find(id);
+            if (con == null)
+            {
+                return NotFound();
+            }
+
+            _context.Contacts.Remove(con);
+            _context.SaveChanges();
+            return NoContent();
+        }
     }
 }
