@@ -5,7 +5,7 @@ using ContactMeApi.Models;
 
 namespace ContactMeApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/contacts")]
     [ApiController]
     public class ContactController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace ContactMeApi.Controllers
 
             if (_context.Contacts.Count() == 0)
             {
-                _context.Contact.Add(new Contact 
+                _context.Contacts.Add(new Contact 
                 { 
                     FirstName = "Dro", 
                     LastName = "Tavarez",
@@ -36,12 +36,12 @@ namespace ContactMeApi.Controllers
         [HttpGet("{id}", Name = "GetContact")]
         public ActionResult<Contact> GetById(long id)
         {
-            var item = _context.Contacts.Find(id);
-            if (item == null)
+            var contact = _context.Contacts.Find(id);
+            if (contact == null)
             {
                 return NotFound();
             }
-            return item;
+            return contact;
         }
     }
 }
