@@ -27,6 +27,7 @@ namespace ContactMeApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               .AddJwtBearer(options =>
               {
@@ -40,11 +41,23 @@ namespace ContactMeApi
                       ValidAudience = Configuration["Jwt:Issuer"],
                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                   };
-              });            
+              });  
+
             services.AddDbContext<ContactContext>(opt =>
                 opt.UseInMemoryDatabase("Contact"));
+
             services.AddMvc()
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()
+                      .AllowCredentials()
+                .Build());
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -55,6 +68,8 @@ namespace ContactMeApi
             }
 
             app.UseAuthentication();
+
+            app.UseCors("CorsPolicy");
 
             app.UseMvc();
         }
