@@ -3,10 +3,10 @@
     public class Contact
     {
         public long Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string JobTitle { get; set; }
-        public string PhoneNumber { get; set; }
+        public string First_name { get; set; }
+        public string Last_name { get; set; }
+        public string Job_title { get; set; }
+        public string Phone_number { get; set; }
         public string Email { get; set; }
     }
 }
