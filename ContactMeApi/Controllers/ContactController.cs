@@ -19,10 +19,10 @@ namespace ContactMeApi.Controllers
             {
                 _context.Contacts.Add(new Contact 
                 { 
-                    FirstName = "Dro", 
-                    LastName = "Tavarez",
-                    JobTitle = "Software Developer",
-                    PhoneNumber = "978-239-9784",
+                    First_name = "Dro", 
+                    Last_name = "Tavarez",
+                    Job_title = "Software Developer",
+                    Phone_number = "978-239-9784",
                     Email = "pe@dro.com"
                 });
                 _context.SaveChanges();
@@ -42,6 +42,14 @@ namespace ContactMeApi.Controllers
                 return NotFound();
             }
             return contact;
+        }
+        [HttpPost]
+        public IActionResult Create(Contact contact)
+        {
+            _context.Contacts.Add(contact);
+            _context.SaveChanges();
+
+            return CreatedAtRoute("GetContact", new { id = contact.Id }, contact);
         }
     }
 }
