@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using ContactMeApi.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ContactMeApi.Controllers
 {
@@ -28,11 +30,14 @@ namespace ContactMeApi.Controllers
                 _context.SaveChanges();
             }
         }
-        [HttpGet]
+
+        [HttpGet, Authorize]
         public ActionResult<List<Contact>> GetAll()
         {
+            var currentUser = HttpContext.User;
             return _context.Contacts.ToList();
         }
+
         [HttpGet("{id}", Name = "GetContact")]
         public ActionResult<Contact> GetById(long id)
         {
@@ -43,6 +48,7 @@ namespace ContactMeApi.Controllers
             }
             return contact;
         }
+
         [HttpPost]
         public IActionResult Create(Contact contact)
         {
@@ -51,6 +57,7 @@ namespace ContactMeApi.Controllers
 
             return CreatedAtRoute("GetContact", new { id = contact.Id }, contact);
         }
+
         [HttpPut("{id}")]
         public IActionResult Update(long id, Contact contact)
         {
@@ -70,6 +77,7 @@ namespace ContactMeApi.Controllers
             _context.SaveChanges();
             return NoContent();
         }
+
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
